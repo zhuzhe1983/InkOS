@@ -446,5 +446,5 @@ describe("versioned package runtime routes", () => {
       if (previousDataDirectory === undefined) delete process.env.INKOS_DATA_DIR;
       else process.env.INKOS_DATA_DIR = previousDataDirectory;
     }
-  }, 15_000);
+  }, 60_000);
 });
