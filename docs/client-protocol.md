@@ -701,7 +701,7 @@ to report a no-op.
 
 ## 12. Conformance fixtures
 
-The repository's `web/lib/ink/*.test.ts` fixtures are the initial executable
+The repository's `server/lib/ink/*.test.ts` fixtures are the initial executable
 test vectors. Before a public v1 release, fixtures MUST be exported as plain JSON
 and binary `.ink` files so any language can run the same cases without TypeScript.
 

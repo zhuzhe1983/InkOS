@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="./web/public/papers3-app-icon.svg" width="92" alt="InkOS logo">
+  <img src="./server/public/papers3-app-icon.svg" width="92" alt="InkOS logo">
 </p>
 
 <h1 align="center">InkOS</h1>
@@ -201,7 +201,7 @@ PaperS3 连接 Wi-Fi 后会提供设备管理网页。无需重新刷固件即�
 需要 Node.js 和一份可用的 Chromium/Chrome：
 
 ```bash
-cd web
+cd server
 npm install
 npm run dev
 ```
@@ -215,6 +215,31 @@ npm run dev
 - `.ink` 网站生成器：<http://127.0.0.1:3000/ink-generator>
 - OpenAPI：<http://127.0.0.1:3000/api/ink/v1/openapi.json>
 
+### Docker Compose 部署
+
+仓库提供可直接部署的 `docker-compose.yml`。镜像内包含 Chromium、中文字体与
+PaperS3 渲染依赖，运行数据保存在独立 Docker volume：
+
+```bash
+cp .env.example .env
+# 在 .env 中按需填写 INKOS_BAIDU_MAP_AK
+docker compose pull
+docker compose up -d
+docker compose ps
+```
+
+GitHub Actions 会为 `main`、版本 tag 和手动任务构建
+`ghcr.io/zhuzhe1983/inkos-server` 的 AMD64/ARM64 镜像。本地修改服务后也可以直接
+构建：
+
+```bash
+docker compose up -d --build
+```
+
+服务按单实例设计：生成队列、锁和 Chromium 池在进程内，多个副本不能共享同一个
+`inkos-data` volume。现有开发目录中的 `.ink-data` 不会自动导入容器；生产环境还
+应为任务产物制定容量监控和清理策略。
+
 构建 PaperS3 固件：
 
 ```bash
@@ -226,14 +251,19 @@ idf.py -p /dev/your-paper-s3-port flash monitor
 
 更完整的编译、分区和设备说明见
 [`firmware-idf/README.md`](./firmware-idf/README.md)。
+已经编译好的整机与应用固件见
+[`release/papers3`](./release/papers3/README.md)。
 
 ### 项目结构
 
 ```text
 inkos/
-├── web/            # Next.js 渲染服务、模拟器、网页客户端与 .ink 生成器
+├── .github/        # Server 容器的 GHCR 构建流水线
+├── docker-compose.yml
+├── server/         # Next.js 渲染服务、模拟器、网页客户端与 .ink 生成器
 ├── firmware-idf/   # 当前 PaperS3 ESP-IDF 客户端
 ├── firmware/       # 早期 Arduino/PlatformIO 参考客户端
+├── release/        # 已校验的 PaperS3 可烧录固件
 ├── docs/           # 客户端协议、服务 API 与 .ink 包格式
 └── output/         # 实机调试与浏览器验收产物
 ```
@@ -245,7 +275,8 @@ inkos/
 - [`.ink` 包格式](./docs/ink-package-format.md)
 - [网站服务 API](./docs/service-api.md)
 - [PaperS3 设备管理](./docs/papers3-device-management.md)
-- [渲染服务与语义内容](./web/README.md)
+- [渲染服务与语义内容](./server/README.md)
+- [PaperS3 编译固件](./release/papers3/README.md)
 
 协议和数据格式已经按语言无关的方式拆开，方便第三方实现新的屏幕配置或客户端。
 当前文档仍属于持续演进中的 Draft，正式开源 LICENSE 尚待确定。
@@ -348,7 +379,7 @@ firmware-embedded home available as a safe fallback.
 Install Node.js and make Chromium or Chrome available:
 
 ```bash
-cd web
+cd server
 npm install
 npm run dev
 ```
@@ -362,6 +393,32 @@ Open:
 - `.ink` generator: <http://127.0.0.1:3000/ink-generator>
 - OpenAPI: <http://127.0.0.1:3000/api/ink/v1/openapi.json>
 
+### Docker Compose deployment
+
+The repository includes a production `docker-compose.yml`. Its image contains
+Chromium, CJK fonts, and the PaperS3 rendering dependencies, while generated
+packages and cache state live in a named Docker volume:
+
+```bash
+cp .env.example .env
+# Set INKOS_BAIDU_MAP_AK in .env when map rendering is required.
+docker compose pull
+docker compose up -d
+docker compose ps
+```
+
+GitHub Actions publishes AMD64 and ARM64 images for `main`, version tags, and
+manual runs as `ghcr.io/zhuzhe1983/inkos-server`. Build local changes with:
+
+```bash
+docker compose up -d --build
+```
+
+Run one replica per data volume. The generator queue, locks, and Chromium pool
+are process-local. Existing development `.ink-data` is not imported
+automatically, and production operators should monitor and expire generated
+artifacts as the volume grows.
+
 Build the PaperS3 firmware:
 
 ```bash
@@ -373,14 +430,19 @@ idf.py -p /dev/your-paper-s3-port flash monitor
 
 See [`firmware-idf/README.md`](./firmware-idf/README.md) for the complete
 firmware workflow.
+Prebuilt factory and app-only images are available under
+[`release/papers3`](./release/papers3/README.md).
 
 ### Repository layout
 
 ```text
 inkos/
-├── web/            # Next.js renderer, simulator, web client, and .ink generator
+├── .github/        # GHCR workflow for the server container
+├── docker-compose.yml
+├── server/         # Next.js renderer, simulator, web client, and .ink generator
 ├── firmware-idf/   # Current PaperS3 ESP-IDF client
 ├── firmware/       # Earlier Arduino/PlatformIO reference client
+├── release/        # Verified, flashable PaperS3 firmware
 ├── docs/           # Client protocol, service API, and package format
 └── output/         # Browser acceptance and physical-device diagnostics
 ```
@@ -392,7 +454,8 @@ inkos/
 - [`.ink` package format](./docs/ink-package-format.md)
 - [Website service API](./docs/service-api.md)
 - [PaperS3 device management](./docs/papers3-device-management.md)
-- [Rendering and semantic content](./web/README.md)
+- [Rendering and semantic content](./server/README.md)
+- [Prebuilt PaperS3 firmware](./release/papers3/README.md)
 
 The protocol is language-independent so third parties can implement another
 client or display profile without sharing the renderer implementation. The

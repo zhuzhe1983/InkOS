@@ -1,0 +1,30 @@
+{
+  "schemaVersion": "inkos.firmware-release/v1",
+  "version": "1.0.0",
+  "builtAt": "2026-07-24T16:53:29+08:00",
+  "sourceCommit": "d96fa475ca21b210d317a94156107b03b3d0c5fa",
+  "target": {
+    "product": "M5Stack PaperS3",
+    "chip": "esp32s3",
+    "flashBytes": 16777216,
+    "flashMode": "dio",
+    "flashFrequency": "80m",
+    "framework": "ESP-IDF 5.4.3"
+  },
+  "artifacts": [
+    {
+      "kind": "factory",
+      "file": "inkos-papers3-1.0.0-factory.bin",
+      "offset": "0x0",
+      "bytes": 6723648,
+      "sha256": "03abf979a2a02caa8f154c818501bd71dab803f6b54f91a58eec3dfc2b49b30b"
+    },
+    {
+      "kind": "application",
+      "file": "inkos-papers3-1.0.0-app.bin",
+      "offset": "0x20000",
+      "bytes": 6592576,
+      "sha256": "aeac397dcc2fe7691c1454bd86eb333d72ed0a5f82117c2fda33f885706dce9c"
+    }
+  ]
+}

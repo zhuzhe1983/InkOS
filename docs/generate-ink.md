@@ -16,7 +16,7 @@
 生成器需要 Node.js 和可用的 Chromium/Chrome：
 
 ```bash
-cd web
+cd server
 npm install
 npm run dev
 ```
@@ -104,7 +104,7 @@ curl -fL -OJ \
 图片查看器、地图、设置”等本地入口的应用首页，可以修改结构化内置首页：
 
 ```text
-web/lib/ink/builtin/papers3-home.ts
+server/lib/ink/builtin/papers3-home.ts
 ```
 
 页面仍然只描述标题、说明、列表项和链接，不应写入像素坐标。客户端支持的精确动作
@@ -121,7 +121,7 @@ inkos://device/settings
 这些是客户端动作，不是需要服务器抓取的网址。修改完成后生成首页包：
 
 ```bash
-cd web
+cd server
 npm run export:papers3-home -- --output ../output/custom-home
 ```
 
@@ -183,7 +183,7 @@ and integrity metadata. It contains no executable package code.
 Start the service:
 
 ```bash
-cd web
+cd server
 npm install
 npm run dev
 ```
@@ -211,10 +211,10 @@ firmware-embedded home remains available through “恢复内置首页”.
 ### Build a custom application home
 
 Edit the coordinate-free home documents in
-`web/lib/ink/builtin/papers3-home.ts`, then run:
+`server/lib/ink/builtin/papers3-home.ts`, then run:
 
 ```bash
-cd web
+cd server
 npm run export:papers3-home -- --output ../output/custom-home
 ```
 

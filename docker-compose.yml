@@ -1,0 +1,39 @@
+name: inkos
+
+services:
+  server:
+    image: ${INKOS_SERVER_IMAGE:-ghcr.io/zhuzhe1983/inkos-server:latest}
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    pull_policy: missing
+    ports:
+      - "${INKOS_PORT:-3000}:3000"
+    environment:
+      INKOS_BAIDU_MAP_AK: ${INKOS_BAIDU_MAP_AK:-}
+      INKOS_GENERATOR_CONCURRENCY: ${INKOS_GENERATOR_CONCURRENCY:-2}
+      INKOS_SOURCE_CACHE_TTL_MS: ${INKOS_SOURCE_CACHE_TTL_MS:-180000}
+    volumes:
+      - inkos-data:/data
+    shm_size: 512mb
+    restart: unless-stopped
+    stop_grace_period: 20s
+    healthcheck:
+      test:
+        - CMD
+        - node
+        - -e
+        - >-
+          const fs=require("node:fs");
+          fs.accessSync("/data",fs.constants.W_OK);
+          fs.accessSync(process.env.INKOS_CHROMIUM_EXECUTABLE_PATH,fs.constants.X_OK);
+          fetch("http://127.0.0.1:3000/api/ink/v1/time",{cache:"no-store"})
+          .then(async(r)=>{const b=await r.json();if(!r.ok||b.schemaVersion!=="inkos.time/v1")process.exit(1)})
+          .catch(()=>process.exit(1));
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+
+volumes:
+  inkos-data:

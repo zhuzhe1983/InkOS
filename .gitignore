@@ -9,7 +9,7 @@
 
 # Generated diagnostics and acceptance artifacts
 /output/
-/web/output/
+/server/output/
 
 # Local logs and temporary files
 *.log
