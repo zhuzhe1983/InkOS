@@ -1,0 +1,12 @@
+# Name,     Type, SubType, Offset,   Size,     Flags
+#
+# The writable home is an A/B raw archive rather than two files in one FS.
+# Uploads erase/write only the inactive slot; a single CRC-protected NVS blob
+# selects it after every ZIP/manifest/artifact check succeeds.  The immutable
+# linked-in home remains the final fallback.
+nvs,        data, nvs,     0x9000,   0x16000,
+phy_init,   data, phy,     0x1f000,  0x1000,
+factory,    app,  factory, 0x20000,  0x740000,
+coredump,   data, coredump,0x760000, 0x10000,
+home_a,     data, 0x40,    0x770000, 0x440000,
+home_b,     data, 0x40,    0xbb0000, 0x440000,

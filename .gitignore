@@ -1,0 +1,26 @@
+# macOS and local editor state
+.DS_Store
+.idea/
+.vscode/
+
+# Codex/agent and browser acceptance state
+/.butler/
+/.playwright-cli/
+
+# Generated diagnostics and acceptance artifacts
+/output/
+/web/output/
+
+# Local logs and temporary files
+*.log
+*.tmp
+*.swp
+*~
+__pycache__/
+*.py[cod]
+
+# Local environment and credentials
+.env
+.env.*
+!.env.example
+!.env.*.example

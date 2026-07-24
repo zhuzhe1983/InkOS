@@ -12,13 +12,16 @@
 
 # testing
 /coverage
+/.playwright-cli/
 
 # next.js
 /.next/
+/.next.rollback-*/
 /out/
 
 # production
 /build
+/.ink-data/
 
 # misc
 .DS_Store

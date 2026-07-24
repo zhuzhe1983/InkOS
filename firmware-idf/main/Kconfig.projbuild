@@ -1,0 +1,13 @@
+menu "InkOS development-only test harnesses"
+
+config INKOS_RSS_SERIAL_HARNESS
+    bool "Enable the one-shot USB-local RSS navigation harness"
+    default n
+    help
+        Development and acceptance testing only. Installs a guarded
+        USB-Serial/JTAG command receiver that can execute one fixed RSS
+        navigation scenario per boot through the production navigation and
+        display paths. It does not add a network endpoint and is disabled in
+        normal production builds.
+
+endmenu

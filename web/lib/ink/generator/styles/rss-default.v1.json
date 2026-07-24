@@ -1,0 +1,36 @@
+{
+  "schemaVersion": "inkos.rss-style/v1",
+  "id": "inkos-default-rss",
+  "version": 1,
+  "feed": {
+    "kind": "list",
+    "layout": "feed",
+    "description": "channel",
+    "summary": "teaser-then-body-lede",
+    "author": "eyebrow",
+    "publishedAt": "calendar-date",
+    "image": "media-then-body",
+    "linkLabel": "阅读详情"
+  },
+  "article": {
+    "kind": "detail",
+    "layoutWithImage": "image-story",
+    "layoutWithoutImage": "article",
+    "eyebrow": "RSS",
+    "bodySourceOrder": [
+      "rss-content-encoded",
+      "atom-content",
+      "rss-description",
+      "atom-summary",
+      "linked-chromium"
+    ],
+    "linkedPage": "fallback-if-teaser",
+    "missingBody": "teaser-then-source-link"
+  },
+  "html": {
+    "unknownElements": "unwrap",
+    "relativeUrls": "entry-base",
+    "unsafeSubtrees": "drop",
+    "decorativeImages": "drop"
+  }
+}
