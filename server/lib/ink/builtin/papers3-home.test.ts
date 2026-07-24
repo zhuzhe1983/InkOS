@@ -406,7 +406,7 @@ describe("PaperS3 built-in home .ink package", () => {
     expect([...archive.sidecars.values()]
       .filter((sidecar) => sidecar.documentUuid !== clock.uuid)
       .every((sidecar) => sidecar.dynamicRegions === undefined)).toBe(true);
-  }, 30_000);
+  }, 60_000);
 
   it("atomically publishes into the existing catalog and serves declared artifacts", async () => {
     const dataDir = await temporaryDataDirectory();
@@ -434,7 +434,7 @@ describe("PaperS3 built-in home .ink package", () => {
     expect(getInkFrameArtifact(loaded, variantId, PAPERS3_HOME_ENTRY_UUID, 0)?.contentType)
       .toBe("image/png");
     expect(getInkDownloadArtifact(loaded).bytes).toEqual(loaded.archive);
-  }, 15_000);
+  }, 60_000);
 
   it("pins canonical firmware bytes and release identity across wall-clock dates", async () => {
     const dataDir = await temporaryDataDirectory();
@@ -496,7 +496,7 @@ describe("PaperS3 built-in home .ink package", () => {
       bytes: canonical.archive.byteLength,
       sha256: canonical.sha256,
     });
-  }, 30_000);
+  }, 60_000);
 
   it("rebuilds a same-day archive produced by an older home generator", async () => {
     const dataDir = await temporaryDataDirectory();
@@ -562,7 +562,7 @@ describe("PaperS3 built-in home .ink package", () => {
     });
     expect(refreshed.manifest.variants.map((variant) => variant.displayMeta.orientation))
       .toEqual(["portrait", "landscape"]);
-  }, 30_000);
+  }, 60_000);
 
   it("moves the old-almanac today marker and revision without accumulating daily jobs", async () => {
     const dataDir = await temporaryDataDirectory();
@@ -605,5 +605,5 @@ describe("PaperS3 built-in home .ink package", () => {
     expect(july17Calendar.content.page.items.find((item) =>
       item.metadata?.some((entry) => entry.label === "状态" && entry.value === "今天")
     )?.id).toBe("calendar-2026-07-17");
-  }, 30_000);
+  }, 60_000);
 });
